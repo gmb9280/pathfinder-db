@@ -1,0 +1,65 @@
+<html>
+<head> 
+	<title> Beastiary attribute counting test </title>
+
+	<!-- Stylesheets --> 
+	<link rel="stylesheet" type="text/css" href="lib/textillate/assets/animate.css">
+	<!--<link rel="stylesheet" type="text/css" href="lib/textillate/assets/animate.css">-->
+
+</head> 
+
+<body> 
+
+	<h1> Attribute Counting Test </h1>
+	<div class="results">
+	</div>
+</body> 
+
+<!-- Scripts --> 
+	<!-- Beastiary JSON --> 
+	<script src="reference/clean-beastiary.js"> </script>
+	<!-- jQuery --> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+	<!-- Includes for Textillate --> 
+	<script src="lib/textillate/assets/jquery.lettering.js"></script>
+	<script src="lib/textillate/assets/jquery.fittext.js"></script>
+	<script src="lib/textillate/jquery.textillate.js"></script>
+	<!-- Test Script, move once done --> 
+	<script>
+		console.log('script started');
+		var beasts = bestiary;
+		var consoleCount = 0;
+		window.onload = function()
+		{
+			//console.log('Window loaded.');
+			appendText('Window Loaded');
+			appendText(beasts.length + ' monsters loaded.');
+			console.log(beasts.length);
+		};
+
+
+		// Add text to the "results" div. 
+		// Practicing using textillate.js as well here.
+		appendText = function(logText)
+		{
+			var newSelector = 'log' + consoleCount; 
+
+			$('<p/>',
+			{
+				class: newSelector, 
+				text: logText
+			}).appendTo('.results');
+
+			$('.' + newSelector).textillate(
+				{ 
+					in: { effect: 'flipInY' }
+				});
+
+			$('.' + newSelector).css('color', 'red');
+			consoleCount ++;
+		};
+	</script>
+<!-- End Scripts --> 
+
+</html>
