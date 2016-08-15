@@ -9,7 +9,16 @@
 		.results
 		{
 			margin:auto;
-			max-width:60%;
+			max-width:50%;
+			position:absolute;
+			left: 0;
+		}
+		.printout
+		{
+			margin:auto;
+			max-width:50%;
+			position:absolute;
+			left: 50%;
 		}
 	</style>
 </head> 
@@ -17,8 +26,16 @@
 <body> 
 
 	<h1> Attribute Counting Test </h1>
-	<button onclick="downloadFile()">Download JSON</button>
+	<button onclick="clearResults()">Clear Results</button>
+	<br>
+
+	<div class="attributes">
+	</div>
 	<div class="results">
+	</div>
+
+	<div class="printout">
+
 	</div>
 </body> 
 
@@ -38,6 +55,7 @@
 
 		var beasts = beastiary;
 		var consoleCount = 0;
+		var printCount = 0;
 		// Array of objects representing distinct value/count per attribute
 		var distinctValues = []; 
 		var total = [];
@@ -48,130 +66,50 @@
 			appendText(beasts.length + ' monsters loaded.');
 
 			// Get keys. 
-			appendText('Monster attributes found:');
+			appendText('Monster attributes found.');
 			var monsterKeys = getMonsterKeys(beasts[0]);
 
-			//appendText('Checking distinct values for ' + monsterKeys[1]);
-			//checkAttributeDistinctNameCount(monsterKeys[1]);
-
+			makeAttributeClickables(monsterKeys);
 			/*for(var i = 1; i < monsterKeys.length; i++)
 			{
 				appendText('Checking distinct values for ' + monsterKeys[i]);
 				checkAttributeDistinctNameCount(monsterKeys[i]);
 				appendText('---------------------------------------------------------', 'green');
 			}*/
-			//total = printJSON(beasts); 
-			//console.log(total);
-			//appendText(JSON.stringify(total);
-			//appendText('Preparing download...', 'red');
-			//saveText( JSON.stringify(total), "filename.json" );
-			//download_csv(JSON.stringify(total);
 		}; 
 
-		/*filename, content*/
-		/*var downloadFile = function() 
+		makeAttributeClickables = function(keys)
 		{
-			console.log('download file');
-
-			var filename = 'beasts.js';
-			var content = JSON.stringify(total);
-			var blob = new Blob([content]);
-			var evt = document.createEvent("HTMLEvents");
-			evt.initEvent("click");
-			$("<a>", {
-			  download: filename,
-			  href: webkitURL.createObjectURL(blob)
-			}).get(0).dispatchEvent(evt);
-		};
-
-		function saveText(text, filename)
-		{
-		  var a = document.createElement('a');
-		  a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(text));
-		  a.setAttribute('download', filename);
-		  a.click()
-		};
-
-
-		function download_csv() 
-		{
-			var obj = JSON.stringify(total);
-		    var hiddenElement = document.createElement('a');
-		    hiddenElement.href = 'data:text/json;charset=utf-8,' + encodeURI(obj);
-		    hiddenElement.target = '_blank';
-		    hiddenElement.download = 'beastiary.csv';
-		    hiddenElement.click();
-		}*/
-		printJSON = function(obj)
-		{
-			var totality = [];
-			for(var i = 0; i< obj.length; i++)
+			for(var i=0; i<keys.length; i++)
 			{
-				totality.push(
+				
+				$("<button/>", 
 				{
-					name: obj[i].name,
-					alignment: nonVals(obj[i].alignment),
-					xpDropped: parseInt(obj[i].drops.xp),
-				    treasureDropped : nonVals(obj[i].drops.treasure), 
-				    gearDropped : nonVals(obj[i].drops.gear), 
-				    type: nonVals(obj[i].classifications.type),
-				    subtypes : obj[i].classifications.subtype,
-				    group: nonVals(obj[i].classifications.group),
-				    sq: nonVals(obj[i].features.sq),
-				    environment: nonVals(obj[i].features.environment),
-				    organization: nonVals(obj[i].features.organization),
-				    isCharacter: nonVals(obj[i].isCharacter), 
-				    isCompanion: nonVals(obj[i].isCompanion), 
-				    savingThrowFort: nonVals(obj[i].savingThrows.fort),
-				    savingThrowRef: nonVals(obj[i].savingThrows.ref), 
-				    savingThrowWil: nonVals(obj[i].savingThrows.wil),
-				    cr: nonVals(obj[i].combatInfo.cr), 
-				    melee: nonVals(obj[i].combatInfo.melee), 
-				    ranged: nonVals(obj[i].combatInfo.ranged), 
-				    ac: nonVals(obj[i].combatInfo.ac), 
-				    acTouch: nonVals(obj[i].combatInfo.ac_touch), 
-				    acFlatfooted: nonVals(obj[i].combatInfo.ac_flatFooted), 
-				    size: nonVals(obj[i].spatial.size),
-				    space: nonVals(obj[i].spatial.space), 
-				    reach: nonVals(obj[i].spatial.reach), 
-				    abilityStrength: nonVals(obj[i].abilityScores.str), 
-				    abilityDex: nonVals(obj[i].abilityScores.dex), 
-				    abilityCon: nonVals(obj[i].abilityScores.con), 
-				    abilityInt: nonVals(obj[i].abilityScores.int), 
-				    abilityWis: nonVals(obj[i].abilityScores.wis), 
-				    abilityCha: nonVals(obj[i].abilityScores.cha),
-				    hitDie: nonVals(obj[i].hitPoints.hitDie), 
-				    averageHP: nonVals(obj[i].hitPoints.hp), 
-				    feats: [],
-				    skills: [],
-				    baseSpeed: nonVals(obj[i].speed.baseSpeed),
-				    flySpeed: nonVals(obj[i].speed.flySpeed), 
-				    maneuverability: nonVals(obj[i].speed.maneuverability),
-				    climbSpeed: nonVals(obj[i].speed.climbSpeed), 
-				    swimSpeed: nonVals(obj[i].speed.swimSpeed), 
-				    burrowSpeed: nonVals(obj[i].speed.burrowSpeed), 
-				    speedSpecial: nonVals(obj[i].speed.speedSpecial), 
-				    speedLand: nonVals(obj[i].speed.speedLand), 
-				    fly: nonVals(obj[i].speed.fly),
-				    climb: nonVals(obj[i].speed.climb),
-				    burrow: nonVals(obj[i].speed.burrow), 
-				    swim: nonVals(obj[i].speed.swim), 
-				    notes: nonVals(obj[i].notes)
-				});
+
+					class: keys[i],
+					on: 
+					{
+						mouseup: function(event)
+						{
+							var myClass = $(this).attr("class");
+							calculateDistinctKey(myClass);
+						}
+					},
+					text: keys[i]
+				}).appendTo('.attributes');
 			}
-			return totality;
+			
 		};
 
-		nonVals = function(val)
+		clearResults = function()
 		{
-			if(val === 'none' || val === '' || val === undefined  || val === '-')
-			{
-				return null;
-			}
-			else
-			{
-				return val;
-			}
+			$('.printout').html("");
+		};
+
+		calculateDistinctKey = function(key)
+		{
+			printOut("Calculating key stats for : " + key, 'red');
+			checkAttributeDistinctNameCount(key);
 		};
 
 		// Get each distinct name and count of those names 
@@ -200,14 +138,39 @@
 
 			for(var k in newAttribute)
 			{
-				appendText(k + ': ' + newAttribute[k].count);
+				printOut(k + ': ' + newAttribute[k].count);
 			} 
 			//appendText(newAttribute, 'red');
 
 			// Sort descending
 		};
 
+		printOut = function(logText, color)
+		{
+			var newSelector = 'print' + printCount; 
 
+			$('<p/>',
+			{
+				class: newSelector, 
+				text: logText
+			}).appendTo('.printout');
+
+			/*$('.' + newSelector).textillate(
+				{ 
+					in: { effect: 'pulse' }
+				});*/
+
+			if(color)
+			{
+				$('.' + newSelector).css('color', color);
+			}
+			else
+			{
+				$('.' + newSelector).css('color', 'black');
+			}
+			
+			printCount ++;
+		}
 		// Add text to the "results" div. 
 		// Practicing using textillate.js as well here.
 		appendText = function(logText, color)
@@ -244,7 +207,7 @@
 
 			for(var k in obj)
 			{
-				appendText(k, 'blue');
+				//appendText(k, 'blue');
 				keys.push(k);
 			} 
 			return keys;
